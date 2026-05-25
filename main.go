@@ -261,6 +261,13 @@ func cmdStop(_ []string) int {
 	return 0
 }
 
+func cmdRestart(args []string) int {
+	if code := cmdStop(nil); code != 0 {
+		return code
+	}
+	return cmdStart(args)
+}
+
 func cmdStatus(_ []string) int {
 	cfg, _ := loadConfig()
 	fmt.Printf("bind:       %s\n", cfg.Bind)
@@ -319,7 +326,7 @@ func cmdAddServer(args []string) int {
 	}
 	fmt.Printf("Adicionado: %s:%d\n", h, p)
 	if _, ok := readPID(); ok {
-		fmt.Println("Reinicie o daemon para aplicar: adb-mux stop && adb-mux start")
+		fmt.Println("Reinicie o daemon para aplicar: adb-mux restart")
 	}
 	return 0
 }
@@ -352,7 +359,7 @@ func cmdRemoveServer(args []string) int {
 	saveConfig(cfg)
 	fmt.Printf("Removido: %s:%d\n", h, p)
 	if _, ok := readPID(); ok {
-		fmt.Println("Reinicie o daemon para aplicar: adb-mux stop && adb-mux start")
+		fmt.Println("Reinicie o daemon para aplicar: adb-mux restart")
 	}
 	return 0
 }
@@ -404,6 +411,7 @@ func usage() {
 uso:
   adb-mux start [-f]
   adb-mux stop
+  adb-mux restart [-f]
   adb-mux status
   adb-mux list-servers
   adb-mux add-server    <host>[:<port>]
@@ -423,6 +431,8 @@ func main() {
 		os.Exit(cmdStart(args))
 	case "stop":
 		os.Exit(cmdStop(args))
+	case "restart":
+		os.Exit(cmdRestart(args))
 	case "status":
 		os.Exit(cmdStatus(args))
 	case "list-servers":
