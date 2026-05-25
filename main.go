@@ -170,7 +170,7 @@ func cmdStart(args []string) int {
 		return 1
 	}
 	if len(cfg.Upstreams) == 0 {
-		fmt.Fprintln(os.Stderr, "Nenhum upstream configurado. Use: bruxaodev/adb-mux add-server <host>:<port>")
+		fmt.Fprintln(os.Stderr, "Nenhum upstream configurado. Use: adb-mux add-server <host>:<port>")
 		return 2
 	}
 	if pid, ok := readPID(); ok {
