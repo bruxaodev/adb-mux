@@ -32,7 +32,7 @@ func configDir() string {
 		return v
 	}
 	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".config", "adb-mux")
+	return filepath.Join(home, ".config", "github.com/bruxaodev/adb-mux")
 }
 
 func configFile() string { return filepath.Join(configDir(), "config.json") }
@@ -136,7 +136,7 @@ func runServer(bind string, port int, ups []Upstream) error {
 	if err != nil {
 		return err
 	}
-	logf("adb-mux ouvindo em %s", addr)
+	logf("github.com/bruxaodev/adb-mux ouvindo em %s", addr)
 	logf("upstreams: %v", ups)
 
 	// Sinal para shutdown limpo
@@ -170,7 +170,7 @@ func cmdStart(args []string) int {
 		return 1
 	}
 	if len(cfg.Upstreams) == 0 {
-		fmt.Fprintln(os.Stderr, "Nenhum upstream configurado. Use: adb-mux add-server <host>:<port>")
+		fmt.Fprintln(os.Stderr, "Nenhum upstream configurado. Use: github.com/bruxaodev/adb-mux add-server <host>:<port>")
 		return 2
 	}
 	if pid, ok := readPID(); ok {
@@ -233,7 +233,7 @@ func runDaemonized(cfg Config) int {
 	// Espera um pouquinho e checa se o PID file apareceu
 	time.Sleep(300 * time.Millisecond)
 	if _, ok := readPID(); ok {
-		fmt.Printf("adb-mux iniciado na porta %d (pid em %s)\n", cfg.Port, pidFile())
+		fmt.Printf("github.com/bruxaodev/adb-mux iniciado na porta %d (pid em %s)\n", cfg.Port, pidFile())
 		return 0
 	}
 	fmt.Fprintln(os.Stderr, "daemon não iniciou — veja", logFile())
@@ -304,7 +304,7 @@ func parseHostPort(s string) (string, int, error) {
 
 func cmdAddServer(args []string) int {
 	if len(args) < 1 {
-		fmt.Fprintln(os.Stderr, "uso: adb-mux add-server <host>[:<port>]")
+		fmt.Fprintln(os.Stderr, "uso: github.com/bruxaodev/adb-mux add-server <host>[:<port>]")
 		return 1
 	}
 	h, p, err := parseHostPort(args[0])
@@ -326,14 +326,14 @@ func cmdAddServer(args []string) int {
 	}
 	fmt.Printf("Adicionado: %s:%d\n", h, p)
 	if _, ok := readPID(); ok {
-		fmt.Println("Reinicie o daemon para aplicar: adb-mux restart")
+		fmt.Println("Reinicie o daemon para aplicar: github.com/bruxaodev/adb-mux restart")
 	}
 	return 0
 }
 
 func cmdRemoveServer(args []string) int {
 	if len(args) < 1 {
-		fmt.Fprintln(os.Stderr, "uso: adb-mux remove-server <host>[:<port>]")
+		fmt.Fprintln(os.Stderr, "uso: github.com/bruxaodev/adb-mux remove-server <host>[:<port>]")
 		return 1
 	}
 	h, p, err := parseHostPort(args[0])
@@ -359,7 +359,7 @@ func cmdRemoveServer(args []string) int {
 	saveConfig(cfg)
 	fmt.Printf("Removido: %s:%d\n", h, p)
 	if _, ok := readPID(); ok {
-		fmt.Println("Reinicie o daemon para aplicar: adb-mux restart")
+		fmt.Println("Reinicie o daemon para aplicar: github.com/bruxaodev/adb-mux restart")
 	}
 	return 0
 }
@@ -378,7 +378,7 @@ func cmdListServers(_ []string) int {
 
 func cmdSetBind(args []string) int {
 	if len(args) < 1 {
-		fmt.Fprintln(os.Stderr, "uso: adb-mux set-bind <addr>  (ex: 127.0.0.1, 0.0.0.0, 100.x.y.z)")
+		fmt.Fprintln(os.Stderr, "uso: github.com/bruxaodev/adb-mux set-bind <addr>  (ex: 127.0.0.1, 0.0.0.0, 100.x.y.z)")
 		return 1
 	}
 	cfg, _ := loadConfig()
@@ -390,7 +390,7 @@ func cmdSetBind(args []string) int {
 
 func cmdSetPort(args []string) int {
 	if len(args) < 1 {
-		fmt.Fprintln(os.Stderr, "uso: adb-mux set-port <port>")
+		fmt.Fprintln(os.Stderr, "uso: github.com/bruxaodev/adb-mux set-port <port>")
 		return 1
 	}
 	p, err := strconv.Atoi(args[0])
@@ -406,18 +406,18 @@ func cmdSetPort(args []string) int {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, `adb-mux — proxy multiplexador de servidores ADB
+	fmt.Fprintln(os.Stderr, `github.com/bruxaodev/adb-mux — proxy multiplexador de servidores ADB
 
 uso:
-  adb-mux start [-f]
-  adb-mux stop
-  adb-mux restart [-f]
-  adb-mux status
-  adb-mux list-servers
-  adb-mux add-server    <host>[:<port>]
-  adb-mux remove-server <host>[:<port>]
-  adb-mux set-port      <port>
-  adb-mux set-bind      <addr>   (127.0.0.1 padrão | 0.0.0.0 expõe na rede)`)
+  github.com/bruxaodev/adb-mux start [-f]
+  github.com/bruxaodev/adb-mux stop
+  github.com/bruxaodev/adb-mux restart [-f]
+  github.com/bruxaodev/adb-mux status
+  github.com/bruxaodev/adb-mux list-servers
+  github.com/bruxaodev/adb-mux add-server    <host>[:<port>]
+  github.com/bruxaodev/adb-mux remove-server <host>[:<port>]
+  github.com/bruxaodev/adb-mux set-port      <port>
+  github.com/bruxaodev/adb-mux set-bind      <addr>   (127.0.0.1 padrão | 0.0.0.0 expõe na rede)`)
 }
 
 func main() {
